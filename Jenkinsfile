@@ -1,6 +1,5 @@
-/*
 def label = "worker-${UUID.randomUUID().toString()}"
-*/
+
 podTemplate(label: label, containers: [
   containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk9', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
@@ -48,12 +47,14 @@ node('masternode') {
           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
           sh """
             docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
-            docker build -t namespace/my-image:${gitCommit} .
-            docker push namespace/my-image:${gitCommit}
+            docker build -t ernesen/my-image:${gitCommit} .
+            docker push ernesen/my-image:${gitCommit}
             """
         }
       }
     }
+  
+/*
     stage('Run kubectl') {
       container('kubectl') {
         sh "kubectl get pods"
@@ -64,5 +65,6 @@ node('masternode') {
         sh "helm list"
       }
     }
+*/
   }
 }
